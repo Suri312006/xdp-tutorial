@@ -26,6 +26,18 @@ int  xdp_drop_func(struct xdp_md *ctx)
 	return XDP_DROP;
 }
 
+SEC("xdp")
+// basically just tells the linux kernel to run this on obtaining a packet
+// and just drop that boy
+// sudo ./xdp_loader --dev veth-basic02 --progname xdp_abort_func 
+// ^ adds the xdp_abort_func rule to the ebtp runtime / hooks
+// sudo ./xdp_loader --dev veth-basic02 --unload-all 
+// ^ removes all linked functions
+// can test functionality with the test env script, look in readme
+int xdp_abort_func(struct xdp_md *ctx){
+	return XDP_ABORTED;
+}
+
 /* Assignment#2: Add new XDP program section that use XDP_ABORTED */
 
 char _license[] SEC("license") = "GPL";
